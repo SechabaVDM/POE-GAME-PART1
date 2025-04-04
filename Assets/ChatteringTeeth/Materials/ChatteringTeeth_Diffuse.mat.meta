@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c497c9625abf56948a8784da752cd67b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 21589
+  packageName: Chattering Teeth
+  packageVersion: 1.0
+  assetPath: Assets/ChatteringTeeth/Materials/ChatteringTeeth_Diffuse.mat
+  uploadId: 21226

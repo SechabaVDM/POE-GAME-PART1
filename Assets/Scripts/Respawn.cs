@@ -1,5 +1,6 @@
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Respawn : MonoBehaviour
 {
@@ -22,9 +23,11 @@ public class Respawn : MonoBehaviour
         {
             DeathScore.deathScore += 1;
             StrengthControl.strengthCount -= 5;
-            RespawnPlayer();
+           // RespawnPlayer();
+            ResetGame();
         }
     }
+    /*
     private void RespawnPlayer()
     {
         if (respawnPoint != null)
@@ -36,5 +39,10 @@ public class Respawn : MonoBehaviour
         {
             Debug.LogError("Respawn point is not assigned!");
         }
+    }
+    */
+    void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

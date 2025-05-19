@@ -8,6 +8,8 @@ TagManager:
   - Hazard
   - MovingObject
   - Trigger
+  - FlyPickup
+  - SpeedBoost
   layers:
   - Default
   - TransparentFX

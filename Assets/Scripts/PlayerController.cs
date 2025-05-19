@@ -1,9 +1,13 @@
 using UnityEngine;
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    
+   
     public float playerSpeed = 5;// Speed of forward movement
+
+  
     public float horizonatlSpeed = 3;// Speed of horizontal movement (left/right)
     public float rightLimit = 5.5f;
     public float leftlimit = -5.5f;
@@ -16,10 +20,13 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;// Reference to the Rigidbody component
     private float initialY;// Stores the initial Y position to track jump height
 
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         initialY = transform.position.y;
+        playerSpeed = 0.17f;
+       
     }
     void Update()
     {
@@ -66,7 +73,24 @@ public class PlayerController : MonoBehaviour
     {
         playerSpeed = newSpeed;
     }
+    private void OnTriggerEnter(Collider other)
+    {
+     
+        Debug.Log("Player triggered: " + other.gameObject.name);
+        if (other.CompareTag("Hazard"))
+        {
+            Debug.Log("Hazard hit! Resetting...");         
+            ResetGame();
+        }
+        else
+        {
+            Debug.Log("Not a hazard. Ignored.");
+        }
+    }
 
-
-
+    void ResetGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+   
 }

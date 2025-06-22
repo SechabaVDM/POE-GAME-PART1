@@ -19,46 +19,75 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;// Reference to the Rigidbody component
     private float initialY;// Stores the initial Y position to track jump height
+    private Animator animator;
 
+    private bool isSlowed = false;
+    private float slowTimer = 0f;
 
+    // Store original speeds so we can restore them after slow ends
+    private float originalHorizontalSpeed;
+    private float originalPlayerSpeed;
+
+    private bool controlsInverted = false;
     private void Start()
     {
+        if (isSlowed)
+        {
+            slowTimer -= Time.deltaTime;
+            if (slowTimer <= 0f)
+            {
+                Unslow();
+            }
+        }
         rb = GetComponent<Rigidbody>();
         initialY = transform.position.y;
         playerSpeed = 0.17f;
-       
+
+        originalHorizontalSpeed = horizonatlSpeed;
+        originalPlayerSpeed = playerSpeed;
     }
     void Update()
     {
-        // Move the player forward continuously
-        transform.Translate(Vector3.forward * Time.deltaTime* playerSpeed, Space.World);
+        // Direction handling
+        float direction = 0f;
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            direction = -1f;
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            direction = 1f;
+
+        if (controlsInverted)
+            direction *= -1f;
+
+        // Movement with limits
+        float newX = transform.position.x + (direction * horizonatlSpeed * Time.deltaTime);
+
+        if (newX >= leftlimit && newX <= rightLimit)
         {
-            // Move left if 'A' or Left Arrow key is pressed and within left limit
-            if (this.gameObject.transform.position.x > leftlimit)
-            {
-                transform.Translate(Vector3.left * Time.deltaTime * horizonatlSpeed);
-            }            
+            transform.Translate(Vector3.right * direction * horizonatlSpeed * Time.deltaTime);
         }
-        // Move right if 'D' or Right Arrow key is pressed and within right limit
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            if(this.gameObject.transform.position.x < rightLimit)
-            {
-                transform.Translate(Vector3.left * Time.deltaTime * horizonatlSpeed * -1);
-            }          
+            controlsInverted = !controlsInverted;
+            Debug.Log("Inversion toggled: " + controlsInverted);
         }
         // Jump when the Space key is pressed and the player is grounded
-        if ((Input.GetKeyDown(KeyCode.Space)) && isGrounded)
+        if ((Input.GetKeyDown(KeyCode.J)) && isGrounded)
 
         {       // Prevent exceeding max height
             if (transform.position.y < initialY + maxJumpHeight) 
             {
                 rb.AddForce(Vector3.up * jumpForce * jumpspeed, ForceMode.Impulse);
-                isGrounded = false; 
+                isGrounded = false;
+                animator.SetTrigger("isJumping");
+                animator.SetBool("isGrounded", false);
             }
         }
 
+    }
+    public void SetControlsInverted(bool state)
+    {
+        controlsInverted = state;
     }
     // Detect collision with the ground to reset jumping ability
     private void OnCollisionEnter(Collision collision)
@@ -67,6 +96,7 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = true;// Player is now on the ground
             initialY = transform.position.y;// Reset initial Y position
+            animator.SetBool("isGrounded", true);
         }
     }
     public void SetMoveSpeed(float newSpeed)
@@ -92,5 +122,32 @@ public class PlayerController : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    public void SlowDown(float duration, float newHorizontalSpeed, float newPlayerSpeed)
+    {
+        if (!isSlowed)
+        {
+            isSlowed = true;
+            slowTimer = duration;
+
+            horizonatlSpeed = newHorizontalSpeed;
+            playerSpeed = newPlayerSpeed;
+
+            Debug.Log($"Player slowed: HorizontalSpeed={horizonatlSpeed}, PlayerSpeed={playerSpeed}");
+        }
+        else
+        {
+            // Reset timer if slowing down again before previous effect ends
+            slowTimer = duration;
+        }
+    }
+
+    // Restore player speeds back to original values.
    
+    private void Unslow()
+    {
+        isSlowed = false;
+        horizonatlSpeed = originalHorizontalSpeed;
+        playerSpeed = originalPlayerSpeed;
+        Debug.Log("Player speed restored");
+    }
 }

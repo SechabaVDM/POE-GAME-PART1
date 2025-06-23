@@ -7,11 +7,18 @@ public class Spider : MonoBehaviour
     public GameObject speedSlowerPrefab;   // Assign the SpeedSlower prefab here (formerly freezingSpellPrefab)
     public Transform spellSpawnPoint;       // Where the spell spawns from (e.g., spider's mouth)
     public Transform player;
+
+    public float speed = 2f;
+    public float distance = 2f;
+
+    private Vector3 startingPosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         animator = GetComponent<Animator>();
         InvokeRepeating("Taunt", 2f, 5f);
+
+        startingPosition = transform.position;
     }
 
     void Taunt()
@@ -47,5 +54,7 @@ public class Spider : MonoBehaviour
     void Update()
     {
 
+        float movement = Mathf.Sin(Time.time * speed) * distance;
+        transform.position = new Vector3(startingPosition.x + movement, startingPosition.y, startingPosition.z);
     }
 }

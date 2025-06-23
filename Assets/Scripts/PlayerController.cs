@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;// Reference to the Rigidbody component
     private float initialY;// Stores the initial Y position to track jump height
 
-
+    private bool controlsInverted = false;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -30,23 +30,28 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        // Move the player forward continuously
-        transform.Translate(Vector3.forward * Time.deltaTime * playerSpeed, Space.World);
+        // Direction handling
+        float direction = 0f;
+
         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
+            direction = -1f;
+        else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+            direction = 1f;
+
+        if (controlsInverted)
+            direction *= -1f;
+
+        // Movement with limits
+        float newX = transform.position.x + (direction * horizonatlSpeed * Time.deltaTime);
+
+        if (newX >= leftlimit && newX <= rightLimit)
         {
-            // Move left if 'A' or Left Arrow key is pressed and within left limit
-            if (this.gameObject.transform.position.x > leftlimit)
-            {
-                transform.Translate(Vector3.left * Time.deltaTime * horizonatlSpeed);
-            }
+            transform.Translate(Vector3.right * direction * horizonatlSpeed * Time.deltaTime);
         }
-        // Move right if 'D' or Right Arrow key is pressed and within right limit
-        if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            if (this.gameObject.transform.position.x < rightLimit)
-            {
-                transform.Translate(Vector3.left * Time.deltaTime * horizonatlSpeed * -1);
-            }
+            controlsInverted = !controlsInverted;
+            Debug.Log("Inversion toggled: " + controlsInverted);
         }
         // Jump when the Space key is pressed and the player is grounded
         if ((Input.GetKeyDown(KeyCode.Space)) && isGrounded)
@@ -97,7 +102,11 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-   
+    public void SetControlsInverted(bool state)
+    {
+        controlsInverted = state;
+    }
+
 
 
 }

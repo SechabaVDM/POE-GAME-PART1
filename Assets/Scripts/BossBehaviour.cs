@@ -11,9 +11,14 @@ public class BossBehav : MonoBehaviour
     public float shootInterval = 1.5f;
     public Transform shootPoint;
 
+    private Animator animator;
+
     private void Start()
     {
         InvokeRepeating(nameof(Shoot), 1f, shootInterval);
+
+        animator = GetComponent<Animator>();
+        InvokeRepeating("Taunt", 2f, 5f);
     }
 
     private void Update()
@@ -28,8 +33,15 @@ public class BossBehav : MonoBehaviour
             direction = 1;
     }
 
-    private void Shoot()
+    public void Shoot()
     {
         Instantiate(projectilePrefab, shootPoint.position, Quaternion.identity);
+    }
+
+    void Taunt()
+    {
+        animator.SetTrigger("Taunt");
+
+        Shoot();
     }
 }

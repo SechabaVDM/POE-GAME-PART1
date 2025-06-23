@@ -13,10 +13,17 @@ public class Damage : MonoBehaviour
 
     public GameManager gameManager;
 
+    public AudioClip hitSound;
+    private AudioSource audioSource;
+
+
+
     public int strength { get; internal set; }
 
     private void Start()
     {
+        audioSource = gameObject.AddComponent<AudioSource>();
+
         // Get the Checkpoint component attached to the same GameObject
         checkpoint = GetComponent<Checkpoint>();
 
@@ -25,16 +32,20 @@ public class Damage : MonoBehaviour
         {
             gameManager = FindFirstObjectByType<GameManager>();
         }
-
+       
     }
     private void OnCollisionEnter(Collision collision)
     {
         // Check if the player collides with a hazard
         if (collision.gameObject.CompareTag("Hazard"))
         {
+
+            audioSource.PlayOneShot(hitSound);
+
             playerStrength = playerStrength - 5; // Reduce player strength on hazard collision
             Debug.Log("Player Strength: " + playerStrength);
 
+            
             if (playerStrength <= 0)
             {
                 Die(); // Call death function if strength is 0

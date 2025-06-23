@@ -40,6 +40,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 649405179865267992, guid: 6cc697f04cd9b6e468d64053a2d7efe5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 649405179865267992, guid: 6cc697f04cd9b6e468d64053a2d7efe5, type: 3}
       propertyPath: shootPoint
       value: 
       objectReference: {fileID: 6528140103861377485}

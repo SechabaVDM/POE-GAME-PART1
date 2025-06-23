@@ -12,6 +12,7 @@ TagManager:
   - SpeedBoost
   - Mask
   - ShieldPickup
+  - Mind
   layers:
   - Default
   - TransparentFX

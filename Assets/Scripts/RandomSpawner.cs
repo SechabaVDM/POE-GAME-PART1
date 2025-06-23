@@ -13,7 +13,7 @@ public class RandomSpawner : MonoBehaviour
 
     private void Start()
     {
-        spawnRoutine = StartCoroutine(SpawnObstacles()); StartCoroutine(SpawnObstacles());
+        spawnRoutine = StartCoroutine(SpawnObstacles());
     }
     void Update()
     {
@@ -39,10 +39,15 @@ public class RandomSpawner : MonoBehaviour
     // Update is called once per frame
     public void StopSpawning()
     {
+        canSpawn = false;
+        canMove = false;
+
         if (spawnRoutine != null)
         {
             StopCoroutine(spawnRoutine);
             spawnRoutine = null;
         }
+
+        Debug.Log("Spawning stopped.");
     }
 }

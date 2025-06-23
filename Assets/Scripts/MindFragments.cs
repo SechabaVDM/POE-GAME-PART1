@@ -41,7 +41,7 @@ public class MindFragments : MonoBehaviour
             }
 
             SpawnSpecialObject();
-            StopAllMovingSections();
+           
             
             hasSpawned = true; // Prevent it from spawning again
         }
@@ -56,12 +56,5 @@ public class MindFragments : MonoBehaviour
            
         }
     }
-    private void StopAllMovingSections()
-    {
-        MoveSection[] movingSections = FindObjectsOfType<MoveSection>();
-        foreach (MoveSection section in movingSections)
-        {
-            section.canMove = false;
-        }
-    }
+  
 }

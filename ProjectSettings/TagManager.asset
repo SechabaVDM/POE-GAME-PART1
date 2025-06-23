@@ -10,6 +10,8 @@ TagManager:
   - Trigger
   - FlyPickup
   - SpeedBoost
+  - Mask
+  - ShieldPickup
   layers:
   - Default
   - TransparentFX

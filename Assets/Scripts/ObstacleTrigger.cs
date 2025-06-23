@@ -5,9 +5,13 @@ public class ObstacleTrigger : MonoBehaviour
 {
     //public GameObject section2;
     public GameObject[] sections;
-
-    private void OnTriggerEnter(Collider other)
+    public GameObject veinyWalls;
+    public void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject.CompareTag("Trigger"))
+        {
+            Instantiate(veinyWalls, new Vector3(0, 6, 64),Quaternion.identity);
+        }
 
         if (other.gameObject.CompareTag("Trigger"))
         {
@@ -26,4 +30,5 @@ public class ObstacleTrigger : MonoBehaviour
             }
         }
     }
+   
 }

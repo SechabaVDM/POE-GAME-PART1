@@ -1,3 +1,4 @@
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,10 +17,20 @@ public class MenuController : MonoBehaviour
     }
     public void StartGame()
     {
-        SceneManager.LoadScene("Level01");
+        SceneManager.LoadSceneAsync(1);
     }
     public void MainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadSceneAsync(0);
+    }
+    
+    public void Retry()
+    {
+        SceneManager.LoadSceneAsync(1);
+
+    }
+    public void LevelTwo()
+    {
+        SceneManager.LoadSceneAsync(3);
     }
 }

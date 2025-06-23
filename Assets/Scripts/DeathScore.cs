@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class DeathScore : MonoBehaviour
 {
+    /*
     public static int deathScore = 0;
     [SerializeField] GameObject deathDisplay;
 
@@ -10,4 +11,5 @@ public class DeathScore : MonoBehaviour
     {
         deathDisplay.GetComponent<TMPro.TMP_Text>().text = "Death Score: " + deathScore;
     }
+    */
 }

@@ -21,7 +21,7 @@ public class Respawn : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Hazard")) // Check if colliding with a hazard
         {
-            DeathScore.deathScore += 1;
+            //DeathScore.deathScore += 1;
             StrengthControl.strengthCount -= 5;
            // RespawnPlayer();
             ResetGame();

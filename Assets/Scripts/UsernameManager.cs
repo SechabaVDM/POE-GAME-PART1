@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 public class UsernameManager : MonoBehaviour
 {
     public TMP_InputField usernameInput;
@@ -9,7 +10,7 @@ public class UsernameManager : MonoBehaviour
         string username = usernameInput.text;
         if (!string.IsNullOrEmpty(username))
         {
-            PlayerPrefs.SetString("Username", username);
+            PlayerPrefs.SetString("Username:", username);
             PlayerPrefs.Save();
             Debug.Log("Username saved: " + username);
         }
@@ -17,6 +18,11 @@ public class UsernameManager : MonoBehaviour
         {
             Debug.LogWarning("Username is empty!");
         }
+    }
+    public void SaveUsernameAndPlay()
+    {
+        SaveUsername();
+        SceneManager.LoadScene(0); 
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

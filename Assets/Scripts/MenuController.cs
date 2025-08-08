@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,6 +18,7 @@ public class MenuController : MonoBehaviour
     }
     public void StartGame()
     {
+       
         SceneManager.LoadSceneAsync(1);
     }
     public void MainMenu()
@@ -32,5 +34,9 @@ public class MenuController : MonoBehaviour
     public void LevelTwo()
     {
         SceneManager.LoadSceneAsync(3);
+    }
+    public void Character()
+    {
+        SceneManager.LoadSceneAsync(5);
     }
 }

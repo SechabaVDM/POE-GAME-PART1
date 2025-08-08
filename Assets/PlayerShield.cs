@@ -11,12 +11,27 @@ public class PlayerShield : MonoBehaviour
     public GameObject shieldUI;
 
     public TextMeshProUGUI shieldTimerText;
-    
+
+    public AudioClip shieldPickupSound; // Drag your sound here in Inspector
+    private AudioSource audioSource;
+
     private float timer = 0f;
+    void Start()
+    {
+        //get the AudioSource component
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("ShieldPickup"))
         {
+            // Play sound
+            if (shieldPickupSound != null)
+            {
+                audioSource.PlayOneShot(shieldPickupSound);
+            }
+
             Destroy(other.gameObject);
             StartCoroutine(ActivateShield());
         }

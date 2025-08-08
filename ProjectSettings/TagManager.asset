@@ -13,6 +13,7 @@ TagManager:
   - Mask
   - ShieldPickup
   - Mind
+  - DashPickup
   layers:
   - Default
   - TransparentFX

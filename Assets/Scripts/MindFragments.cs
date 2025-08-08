@@ -8,6 +8,9 @@ public class MindFragments : MonoBehaviour
     [SerializeField] GameObject objectToSpawn; // The object you want to spawn
     [SerializeField] Transform spawnLocation;  // Where to spawn the object
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioClip pickupSound;
+    private AudioSource audioSource;
 
     [SerializeField] PlayerController playerController; // Reference to player controller
     private bool hasSpawned = false; // To ensure it spawns only once
@@ -22,30 +25,48 @@ public class MindFragments : MonoBehaviour
                 Debug.LogError("PlayerController not found in scene!");
             }
         }
+        // Add AudioSource if not present
+        audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
     private void Update()
     {
-        mindDisplay.GetComponent<TMPro.TMP_Text>().text = "Mind Fragment:" + mindCount;
+        // Update UI
+        if (mindDisplay != null)
+        {
+            mindDisplay.GetComponent<TMPro.TMP_Text>().text = "Mind Fragment: " + mindCount;
+        }
 
-        // Check if player has 10 fragments and object hasn't been spawned
+        // Spawn special object if 10 fragments are collected
         if (mindCount >= 10 && !hasSpawned)
         {
-            if (playerController == null)
-            {
-                Debug.LogError("playerController is NULL right before calling SetMoveSpeed!");
-            }
-            else
+            if (playerController != null)
             {
                 Debug.Log("playerController found, setting move speed.");
                 playerController.SetMoveSpeed(12f);
             }
+            else
+            {
+                Debug.LogError("playerController is NULL right before calling SetMoveSpeed!");
+            }
 
             SpawnSpecialObject();
-           
-            
-            hasSpawned = true; // Prevent it from spawning again
+            hasSpawned = true;
         }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Mind"))
+        {
+            // Play sound
+            if (pickupSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(pickupSound);
+            }
 
+            mindCount++;
+            Destroy(other.gameObject);
+        }
     }
     private void SpawnSpecialObject()
     {

@@ -24,7 +24,7 @@ public class Respawn : MonoBehaviour
             //DeathScore.deathScore += 1;
             StrengthControl.strengthCount -= 5;
            // RespawnPlayer();
-            ResetGame();
+            //ResetGame();
         }
     }
     /*

@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Update is running...");
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("P key pressed!");
+            Debug.Log("Esc key pressed!");
             if (isPaused) Resume();
             else Pause();
         }
@@ -49,20 +49,25 @@ public class GameManager : MonoBehaviour
     public void MainMenu()
     {
         Time.timeScale = 1f;
+        PlayerPrefs.GetString("Username:" , "Player");
         SceneManager.LoadScene("MainMenu"); // Ensure this scene is added to Build Settings
     }
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+        AudioListener.pause = false; //  Resume all audio
         isPaused = false;
+
     }
 
     public void Pause()
     {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
+        AudioListener.pause = true; //  Pause all audio
         isPaused = true;
+
     }
 
     public void LoadMainMenu()

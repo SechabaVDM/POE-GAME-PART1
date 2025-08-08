@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Services.CloudSave;
+using System.Threading.Tasks;
 
 public class ObstacleCounter : MonoBehaviour
 {
@@ -11,7 +13,7 @@ public class ObstacleCounter : MonoBehaviour
     public GameObject bossPrefab;
     public Transform bossSpawnPoint; // Create empty GameObject at (-9, 2, 0) and assign here
     public RandomSpawner[] spawners; // Assign all spawners in the scene
-    private int hazardsPassed = 0;
+    private int hazardsPassed ;
     private bool bossSpawned = false;
     public BossFightManager bossFightManager;
 
@@ -21,6 +23,7 @@ public class ObstacleCounter : MonoBehaviour
         {
             if (++hazardsPassed <= 100)
                 counterText.text = "SCORE : " + hazardsPassed;
+
         }
 
         if (hazardsPassed >= 100 && !bossSpawned)
@@ -30,12 +33,12 @@ public class ObstacleCounter : MonoBehaviour
             foreach (var spawner in spawners)
             {
                 spawner.StopSpawning();              // Stop the coroutine and movement
-                Destroy(spawner.gameObject);         //  Destroy the spawner object completely
+                Destroy(spawner.gameObject);  //  Destroy the spawner object completely
             }
 
             Instantiate(bossPrefab, bossSpawnPoint.position, Quaternion.identity);
 
-            bossFightManager.StartBossFight(); // Optional logic
+            bossFightManager.StartBossFight(); 
 
             bossSpawned = true;
 
@@ -43,10 +46,22 @@ public class ObstacleCounter : MonoBehaviour
             StartCoroutine(LoadSceneAfterDelay(40f));
         }
     }
-    private IEnumerator LoadSceneAfterDelay(float delay)
+    public IEnumerator LoadSceneAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-        Debug.Log("Loading Scene 4 after 40 seconds...");
-        SceneManager.LoadScene(4); // Replace with your actual scene index or name
+
+        // Save to cloud
+        SaveScoreToCloud(hazardsPassed);
+
+        SceneManager.LoadScene(4);
+    }
+
+    private async void SaveScoreToCloud(int score)
+    {
+        await CloudSaveManager.InitializationTask;
+        string username = PlayerPrefs.GetString("Username", "Player");
+
+        await CloudSaveManager.Instance.SaveData(username, score);
+    
     }
 }
